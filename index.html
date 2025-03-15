@@ -1,0 +1,252 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Prank dan Kecocokan</title>
+    <style>
+        body {
+            font-family: 'Arial', sans-serif;
+            background: linear-gradient(45deg, #ff7f50, #ff6347);
+            height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            margin: 0;
+            color: white;
+            text-align: center;
+        }
+
+        .container {
+            width: 100%;
+            max-width: 600px;
+            padding: 20px;
+            background: rgba(0, 0, 0, 0.8);
+            border-radius: 15px;
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.5);
+        }
+
+        h1 {
+            font-size: 36px;
+            margin-bottom: 20px;
+        }
+
+        .button {
+            padding: 15px 30px;
+            font-size: 20px;
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            border-radius: 50px;
+            cursor: pointer;
+            margin-top: 10px;
+            transition: all 0.3s ease;
+        }
+
+        .button:hover {
+            background-color: #45a049;
+        }
+
+        .button:active {
+            transform: scale(0.95);
+        }
+
+        /* Style untuk bagian Prank */
+        .prank-section {
+            display: block;
+        }
+
+        /* Style untuk bagian Kecocokan */
+        .compatibility-section {
+            display: none;
+        }
+
+        /* Board style untuk prank */
+        .message-board {
+            display: none;
+            background-color: rgba(0, 0, 0, 0.9);
+            color: #ff6347;
+            padding: 30px;
+            border-radius: 15px;
+            margin-top: 20px;
+            font-size: 24px;
+        }
+
+        /* Style untuk gambar prank muncul mendadak (Jumpscare) */
+        .image-container {
+            display: none;
+            margin-top: 20px;
+            max-width: 80%;
+            margin-left: auto;
+            margin-right: auto;
+            animation: jumpscare 0.5s ease-in-out; /* Animasi jumpscare */
+        }
+
+        img {
+            width: 100%;
+            max-width: 350px; 
+            height: auto;
+            border-radius: 15px;
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.3);
+            transition: transform 0.3s ease-in-out;
+        }
+
+        img:hover {
+            transform: scale(1.05);
+        }
+
+        .reset-button {
+            padding: 15px 30px;
+            font-size: 20px;
+            color: white;
+            background-color: #ff6347;
+            border: none;
+            border-radius: 50px;
+            cursor: pointer;
+            margin-top: 20px;
+            transition: background-color 0.3s;
+        }
+
+        .reset-button:hover {
+            background-color: #ff7f50;
+        }
+
+        .reset-button:active {
+            transform: scale(0.95);
+        }
+
+        /* Animasi jumpscare */
+        @keyframes jumpscare {
+            0% {
+                transform: scale(0);
+                opacity: 0;
+            }
+            100% {
+                transform: scale(1);
+                opacity: 1;
+            }
+        }
+
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        <h1>Apakah kamu cocok</h1>
+
+        <!-- Tombol untuk beralih antara Prank dan Kecocokan -->
+        <div>
+            <button class="button" onclick="showPrank()">Hadiah kamu di tombol paling bawah</button>
+            <button class="button" onclick="showCompatibility()">Kecocokan kamu</button>
+        </div>
+
+        <!-- Section Prank -->
+        <div class="prank-section" id="prank-section">
+            <h2>Tekan tombol ini dan dapatkan hadiah!</h2>
+            <button class="button" onclick="showPrankResult()">Klik Aku!</button>
+
+            <!-- Gambar dan Board Prank -->
+            <div class="image-container" id="image-container">
+                <img src="https://cdn0-production-images-kly.akamaized.net/jeO-t195wauvwmx38QusCrPjKKs=/1200x1200/smart/filters:quality(75):strip_icc():format(webp)/kly-media-production/medias/1266307/original/021993700_1466081081-o-BLACK-EYED-CHILD-facebook.jpg" alt="Penampakan Hantu">
+            </div>
+
+            <div class="message-board" id="message-board">
+                <p>Kamu kena prank hahaha!</p>
+                <button class="reset-button" onclick="resetPrank()">Ulangi Lagi</button>
+            </div>
+        </div>
+
+        <!-- Section Kecocokan -->
+        <div class="compatibility-section" id="compatibility-section">
+            <h2>Cek Kecocokan</h2>
+            <label for="name1">Nama 1: </label>
+            <input type="text" id="name1" placeholder="Masukkan Nama 1">
+            <br>
+            <label for="name2">Nama 2: </label>
+            <input type="text" id="name2" placeholder="Masukkan Nama 2">
+            <br>
+            <button class="button" onclick="checkCompatibility()">Apakah Cocok?</button>
+
+            <div class="message-board" id="compatibility-board">
+                <p id="compatibility-result"></p>
+                <button class="reset-button" onclick="resetCompatibility()">Cek Lagi</button>
+            </div>
+        </div>
+
+    </div>
+
+    <script>
+        // Switch antara side Prank dan Kecocokan
+        function showPrank() {
+            document.getElementById('prank-section').style.display = 'block';
+            document.getElementById('compatibility-section').style.display = 'none';
+        }
+
+        function showCompatibility() {
+            document.getElementById('prank-section').style.display = 'none';
+            document.getElementById('compatibility-section').style.display = 'block';
+        }
+
+        // Function untuk prank
+        function showPrankResult() {
+            const messageBoard = document.getElementById('message-board');
+            const imageContainer = document.getElementById('image-container');
+            
+            // Tampilkan gambar dan pesan prank dengan efek jumpscare
+            imageContainer.style.display = 'block';
+            messageBoard.style.display = 'block';
+
+            // Tambahkan efek suara jika diinginkan
+            const audio = new Audio('https://www.soundjay.com/button/beep-07.wav'); // Suara efek
+            audio.play();
+        }
+
+        function resetPrank() {
+            const messageBoard = document.getElementById('message-board');
+            const imageContainer = document.getElementById('image-container');
+            
+            messageBoard.style.display = 'none';
+            imageContainer.style.display = 'none';
+        }
+
+        // Fungsi untuk menghasilkan persentase kecocokan acak
+        function generateCompatibility() {
+            const compatibilityScores = [50, 65, 90, 100, 99, 87, 12, 0, 1, 56, 77, 98, 63];
+            const randomIndex = Math.floor(Math.random() * compatibilityScores.length);
+            return compatibilityScores[randomIndex];
+        }
+
+        // Fungsi untuk memeriksa kecocokan
+        function checkCompatibility() {
+            const name1 = document.getElementById('name1').value;
+            const name2 = document.getElementById('name2').value;
+
+            if (name1 === "" || name2 === "") {
+                alert("Mohon masukkan kedua nama!");
+                return;
+            }
+
+            const compatibility = generateCompatibility();
+            const message = `${name1} dan ${name2} cocok ${compatibility}%`;
+            
+            const messageBoard = document.getElementById('compatibility-board');
+            const resultText = document.getElementById('compatibility-result');
+            resultText.textContent = message;
+
+            messageBoard.style.display = 'block';
+        }
+
+        // Fungsi untuk mereset form dan sembunyikan hasil
+        function resetCompatibility() {
+            const messageBoard = document.getElementById('compatibility-board');
+            const name1Input = document.getElementById('name1');
+            const name2Input = document.getElementById('name2');
+
+            messageBoard.style.display = 'none';
+            name1Input.value = '';
+            name2Input.value = '';
+        }
+    </script>
+
+</body>
+</html>
